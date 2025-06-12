@@ -2,6 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
+const cors = require('cors');
+
+
+app.use(cors());
+
 
 const supplyRoutes = require('./routes/Supply.Route');
 const rateRoutes = require('./routes/Rate.Route');
@@ -19,7 +24,7 @@ app.use('/api/v0.1', rateRoutes);
 app.use((err, req, res, next) => {
       console.error(err.stack);
       const { status = 500, message = "Something went wrong!" } = err;
-      res.status(status).render("error", { err });
+      res.status(status).json({ status, message, error: err.message });
 });
 
 app.listen(port, () => {

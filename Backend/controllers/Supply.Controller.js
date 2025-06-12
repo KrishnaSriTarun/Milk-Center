@@ -2,10 +2,12 @@ const Supply = require('../models/Supply');
 const Rate = require('../models/Rate');
 
 exports.addSupply = async (req, res) => {
-      const { sellerId, quantity, fat } = req.body;
+      console.log(req.body);
+      
+      const { sellerId, quantity, fat,status } = req.body;
       const [latestRate] = await Rate.find().sort({ createdAt: -1 }).limit(1);
       const amount = Math.floor(fat * latestRate.rate * quantity);
-      const supply = new Supply({ sellerId, quantity, fat, rate: latestRate.rate, amount });
+      const supply = new Supply({ sellerId, quantity, fat, rate: latestRate.rate, amount,status });
       await supply.save();
       res.status(201).json(supply);
 };

@@ -1,0 +1,165 @@
+/* Dashboard.css - Bootstrap Enhanced */
+
+/* Custom animations and enhancements */
+@keyframes spin {
+      from {
+            transform: rotate(0deg);
+      }
+
+      to {
+            transform: rotate(360deg);
+      }
+}
+
+.spinner-border-sm.spinning {
+      animation: spin 1s linear infinite;
+}
+
+/* Card hover effects */
+.card {
+      transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+      transform: translateY(-2px);
+}
+
+/* Table enhancements */
+.table-hover tbody tr:hover {
+      background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Custom badge styles for fat content */
+.badge {
+      font-size: 0.75rem;
+      padding: 0.35em 0.65em;
+}
+
+/* Loading spinner custom style */
+.spinner-border {
+      width: 3rem;
+      height: 3rem;
+}
+
+/* Summary card icons background */
+.bg-opacity-10 {
+      --bs-bg-opacity: 0.1;
+}
+
+/* Responsive table improvements */
+@media (max-width: 768px) {
+      .table-responsive {
+            font-size: 0.875rem;
+      }
+
+      .card-body {
+            padding: 1rem;
+      }
+
+      .d-flex.gap-3 {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 0.5rem;
+      }
+}
+
+/* Custom scrollbar for table */
+.table-responsive::-webkit-scrollbar {
+      height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+}
+
+/* Empty state styling */
+.text-center .opacity-50 {
+      opacity: 0.5 !important;
+}
+
+/* Seller avatar custom styling */
+.seller-avatar {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 600;
+}
+
+/* Status badge improvements */
+.badge.bg-success {
+      background-color: #198754 !important;
+}
+
+.badge.bg-secondary {
+      background-color: #6c757d !important;
+}
+
+/* Filter section enhancements */
+.form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Card shadow improvements */
+.shadow-sm {
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+/* Pagination improvements */
+.page-link {
+      color: #0d6efd;
+      border-color: #dee2e6;
+}
+
+.page-link:hover {
+      color: #0a58ca;
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+}
+
+.page-item.disabled .page-link {
+      color: #6c757d;
+      background-color: #fff;
+      border-color: #dee2e6;
+}
+
+/* Utility classes */
+.fw-semibold {
+      font-weight: 600 !important;
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+      .bg-light {
+            background-color: #f8f9fa !important;
+      }
+}
+
+/* Print styles */
+@media print {
+
+      .btn,
+      .pagination,
+      .alert {
+            display: none !important;
+      }
+
+      .card {
+            border: 1px solid #000 !important;
+            box-shadow: none !important;
+      }
+}

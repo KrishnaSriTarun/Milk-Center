@@ -22,6 +22,12 @@ const supplySchema = new Schema({
             type: Number,
             required: true
       },
+            status: {
+            type: String,
+            enum: ['Pending', 'Completed'],
+            required: true
+      },
+
       createAt:{
             type: Date,
             default: Date.now
