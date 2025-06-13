@@ -1,17 +1,19 @@
-import './App.css';
+
 import { Routes, Route } from "react-router-dom";
 import Navbar from './Pages/Navbar/Navbar';
 import Dashboard from './Pages/Dashboard/Dashboard';
-import SupplyForm from './Components/SupplyForm/SupplyForm';
+import Sellers from './Pages/Sellers/Sellers';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <div>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Dashboard />} />
-        <Route path='/addSupply' element={<SupplyForm />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/addMilk' element={<Sellers />} />
       </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 }

@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Calendar, DollarSign, Droplets, RefreshCw } from 'lucide-react';
+import { Package, RefreshCw } from 'lucide-react';
 import { getAllSupply } from './../../Services/Supply';
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Dashboard() {
       const [suppliesData, setSuppliesData] = useState({
             currentPage: 1,
             totalPages: 1,
             totalSupplies: 0,
-            supplies: []
+            supplies: [],
       });
 
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
       const [sellerFilter, setSellerFilter] = useState('');
 
-      const fetchSupplies = async () => {
+      const fetchSupplies = async (page = 1, showToast = false) => {
             setLoading(true);
             setError(null);
             try {
-                  const response = await getAllSupply();
-                  toast.success('Data refreshed successfully');
+                  const response = await getAllSupply(page);
                   setSuppliesData(response.data);
+                  if (showToast) toast.success('Data refreshed successfully');
             } catch (err) {
                   console.error('Error fetching supplies:', err);
                   setError('Failed to load supplies data');
@@ -32,13 +33,24 @@ function Dashboard() {
       };
 
       useEffect(() => {
-            fetchSupplies();
+            fetchSupplies(); // fetch first page by default
       }, []);
 
+      const changePage = (newPage) => {
+            if (
+                  newPage >= 1 &&
+                  newPage <= suppliesData.totalPages &&
+                  newPage !== suppliesData.currentPage
+            ) {
+                  fetchSupplies(newPage);
+            }
+      };
+
       const formatAmount = (amount) => {
-            return new Intl.NumberFormat('en-US', {
+            return new Intl.NumberFormat('en-IN', {
                   style: 'currency',
-                  currency: 'USD'
+                  currency: 'INR',
+                  maximumFractionDigits: 0,
             }).format(amount);
       };
 
@@ -48,14 +60,17 @@ function Dashboard() {
             return 'badge bg-success';
       };
 
-      const filteredSupplies = suppliesData.supplies.filter(supply =>
+      const filteredSupplies = suppliesData.supplies.filter((supply) =>
             sellerFilter === '' || supply.sellerId.toString().includes(sellerFilter)
       );
 
       if (loading) {
             return (
                   <div className="container-fluid py-4">
-                        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
+                        <div
+                              className="d-flex justify-content-center align-items-center"
+                              style={{ minHeight: '400px' }}
+                        >
                               <div className="text-center">
                                     <div className="spinner-border text-primary mb-3" role="status">
                                           <span className="visually-hidden">Loading...</span>
@@ -77,9 +92,9 @@ function Dashboard() {
                                           <h1 className="card-title h2 mb-2">Supplies Dashboard</h1>
                                           <p className="text-muted mb-0">Manage and track your milk supplies</p>
                                     </div>
-                                    <button 
-                                          className="btn btn-primary d-flex align-items-center gap-2" 
-                                          onClick={fetchSupplies} 
+                                    <button
+                                          className="btn btn-primary d-flex align-items-center gap-2"
+                                          onClick={() => fetchSupplies(suppliesData.currentPage, true)}
                                           disabled={loading}
                                     >
                                           <RefreshCw size={16} className={loading ? 'spinner-border spinner-border-sm' : ''} />
@@ -123,7 +138,7 @@ function Dashboard() {
                         </div>
                   </div>
 
-                  {/* Supplies Table */}
+                  {/* Table */}
                   <div className="card shadow-sm">
                         <div className="card-header bg-white">
                               <h5 className="card-title mb-0">Milk Records</h5>
@@ -133,53 +148,42 @@ function Dashboard() {
                                     <table className="table table-hover mb-0">
                                           <thead className="table-light">
                                                 <tr>
-                                                      <th className="border-0">Seller ID</th>
-                                                      <th className="border-0">Name</th>
-                                                      <th className="border-0">Quantity</th>
-                                                      <th className="border-0">Fat %</th>
-                                                      <th className="border-0">Rate</th>
-                                                      <th className="border-0">Amount</th>
-                                                      <th className="border-0">Status</th>
+                                                      <th>Seller ID</th>
+                                                      <th>Name</th>
+                                                      <th>Quantity</th>
+                                                      <th>Fat %</th>
+                                                      <th>Rate</th>
+                                                      <th>Amount</th>
+                                                      <th>Status</th>
                                                 </tr>
                                           </thead>
                                           <tbody>
                                                 {filteredSupplies.length > 0 ? (
-                                                      filteredSupplies.map((supply, index) => (
+                                                      filteredSupplies.map((supply) => (
                                                             <tr key={supply._id}>
+                                                                  <td>{supply.sellerId}</td>
+                                                                  <td className="text-muted">Name</td>
+                                                                  <td>{supply.quantity} L</td>
                                                                   <td>
-                                                                        <div className="d-flex align-items-center">
-                                                                              <div className="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-2" 
-                                                                                    style={{ width: '32px', height: '32px' }}>
-                                                                                    <span className="text-dark fw-semibold small">{supply.sellerId}</span>
-                                                                              </div>
-                                                                        </div>
+                                                                        <span className={getFatBadgeClass(supply.fat)}>{supply.fat}%</span>
                                                                   </td>
+                                                                  <td>₹{supply.rate}</td>
+                                                                  <td className="fw-semibold text-success">{formatAmount(supply.amount)}</td>
                                                                   <td>
-                                                                        <span className="text-muted">Name</span>
-                                                                  </td>
-                                                                  <td>
-                                                                        <span className="fw-medium">{supply.quantity} L</span>
-                                                                  </td>
-                                                                  <td>
-                                                                        <span className={getFatBadgeClass(supply.fat)}>
-                                                                              {supply.fat}%
-                                                                        </span>
-                                                                  </td>
-                                                                  <td>
-                                                                        <span className="fw-medium">${supply.rate}</span>
-                                                                  </td>
-                                                                  <td>
-                                                                        <span className="fw-semibold text-success">{formatAmount(supply.amount)}</span>
-                                                                  </td>
-                                                                  <td>
-                                                                        <span className={`badge ${supply.status === 'Completed' ? 'bg-success' : 'bg-warning text-dark'} px-2 py-1 rounded`}>{supply.status}
+                                                                        <span
+                                                                              className={`badge ${supply.status === 'Completed'
+                                                                                          ? 'bg-success'
+                                                                                          : 'bg-warning text-dark'
+                                                                                    } px-2 py-1 rounded`}
+                                                                        >
+                                                                              {supply.status}
                                                                         </span>
                                                                   </td>
                                                             </tr>
                                                       ))
                                                 ) : (
                                                       <tr>
-                                                            <td colSpan="8" className="text-center py-4">
+                                                            <td colSpan="7" className="text-center py-4">
                                                                   <div className="text-muted">
                                                                         <Package size={48} className="mb-2 opacity-50" />
                                                                         <p className="mb-0">No supplies found matching your filter</p>
@@ -198,21 +202,28 @@ function Dashboard() {
                         <div className="card mt-4 shadow-sm">
                               <div className="card-body">
                                     <div className="d-flex justify-content-between align-items-center">
-                                          <div>
-                                                <span className="text-muted">
-                                                      Showing page <strong>{suppliesData.currentPage}</strong> of{' '}
-                                                      <strong>{suppliesData.totalPages}</strong>
-                                                </span>
-                                          </div>
+                                          <span className="text-muted">
+                                                Page <strong>{suppliesData.currentPage}</strong> of{' '}
+                                                <strong>{suppliesData.totalPages}</strong>
+                                          </span>
                                           <nav>
                                                 <ul className="pagination mb-0">
                                                       <li className={`page-item ${suppliesData.currentPage === 1 ? 'disabled' : ''}`}>
-                                                            <button className="page-link" disabled={suppliesData.currentPage === 1}>
+                                                            <button
+                                                                  className="page-link"
+                                                                  onClick={() => changePage(suppliesData.currentPage - 1)}
+                                                            >
                                                                   Previous
                                                             </button>
                                                       </li>
-                                                      <li className={`page-item ${suppliesData.currentPage === suppliesData.totalPages ? 'disabled' : ''}`}>
-                                                            <button className="page-link" disabled={suppliesData.currentPage === suppliesData.totalPages}>
+                                                      <li
+                                                            className={`page-item ${suppliesData.currentPage === suppliesData.totalPages ? 'disabled' : ''
+                                                                  }`}
+                                                      >
+                                                            <button
+                                                                  className="page-link"
+                                                                  onClick={() => changePage(suppliesData.currentPage + 1)}
+                                                            >
                                                                   Next
                                                             </button>
                                                       </li>

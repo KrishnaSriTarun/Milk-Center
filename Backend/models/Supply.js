@@ -33,5 +33,6 @@ const supplySchema = new Schema({
             default: Date.now
       }
 });
+supplySchema.index({ createAt: 1 }, { expireAfterSeconds: 7776000 }); 
 const Supply = mongoose.model('Supply', supplySchema);
 module.exports = Supply;

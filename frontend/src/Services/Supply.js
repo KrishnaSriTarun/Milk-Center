@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const getAllSupply=async ()=>{
-      return await axios.get("http://localhost:3000/api/v0.1/Supply");
+export const getAllSupply=async (page=1)=>{
+      return axios.get(`http://localhost:3000/api/v0.1/Supply?page=${page}`);
 }
 
 export const addNewSupply=async (data)=>{
