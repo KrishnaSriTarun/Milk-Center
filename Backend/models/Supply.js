@@ -22,7 +22,7 @@ const supplySchema = new Schema({
             type: Number,
             required: true
       },
-            status: {
+      status: {
             type: String,
             enum: ['Pending', 'Completed'],
             required: true

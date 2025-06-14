@@ -1,0 +1,13 @@
+.rate-container {
+  max-width: 500px;
+  margin: auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #fdfdfd;
+}
+
+.rate-form {
+  display: flex;
+  flex-direction: column;
+}

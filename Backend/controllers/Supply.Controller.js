@@ -13,25 +13,19 @@ exports.addSupply = async (req, res) => {
 
 
 exports.getAllSupplies = async (req, res) => {
-            const page = parseInt(req.query.page) || 1;
-            const limit = 10;
-            const totalSupplies = await Supply.countDocuments();
-            const totalPages = Math.ceil(totalSupplies / limit);
-            const supplies = await Supply.find()
-                  .sort({ createdAt: -1 })
-                  .skip((page - 1) * limit)
-                  .limit(limit);
-            const distinctUserIds = await Supply.distinct('sellerId');
-            res.status(200).json({
-                  currentPage: page,
-                  totalPages,
-                  totalSupplies,
-                  supplies,
-                  distinctUserIds
-            });
+      const page = parseInt(req.query.page) || 1;
+      const limit = 10;
+      const totalSupplies = await Supply.countDocuments();
+      const totalPages = Math.ceil(totalSupplies / limit);
+      const supplies = await Supply.find()
+            .sort({ createdAt: -1 })
+            .skip((page - 1) * limit)
+            .limit(limit);
+      const distinctUserIds = await Supply.distinct('sellerId');
+      res.status(200).json({ currentPage: page, totalPages, totalSupplies, supplies, distinctUserIds });
 };
 
-exports.getSupplyByUser = async (req, res) => {
+exports.getSupplyByUser = async (req, res) => {   //Rethink
       const { sellerId } = req.query;
       const tenDaysAgo = new Date();
       tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
@@ -61,3 +55,18 @@ exports.deleteSupply = async (req, res) => {
       await Supply.findByIdAndDelete(id);
       res.status(204).json("deleted")
 }
+
+exports.markSuppliesCompleted = async (req, res) => {
+      const { sellerId, from, to } = req.body;
+      const fromDate = new Date(from);
+      const toDate = new Date(to);
+      toDate.setHours(23, 59, 59, 999);
+      const filter = {
+            sellerId,
+            createAt: { $gte: fromDate, $lte: toDate },
+            status: 'Pending'
+      };
+      const result = await Supply.updateMany(filter, { $set: { status: 'Completed' } });
+      res.status(200).json({ message: `${result.modifiedCount} supplies marked as Completed.` });
+};
+

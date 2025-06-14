@@ -5,6 +5,10 @@ const rateSchema = new Schema({
       rate: {
             type: Number,
             required: true
+      },
+      specialRate:{
+            type: Number,
+            required: true
       }
 }, {
       timestamps: true

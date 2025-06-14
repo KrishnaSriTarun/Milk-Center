@@ -26,15 +26,24 @@ module.exports.validateSellerIdQuery = (req, res, next) => {
 };
 
 module.exports.validateAddRate = (req, res, next) => {
-      const { rate } = req.body;
+      const { rate,specialRate } = req.body;
       if (rate === undefined) {
             return res.status(400).json({ error: 'rate is required' });
+      }
+      if (specialRate  === undefined) {
+            return res.status(400).json({ error: 'specialRate  is required' });
       }
       if (typeof rate !== 'number') {
             return res.status(400).json({ error: 'rate must be a number' });
       }
       if (rate <= 0) {
             return res.status(400).json({ error: 'rate must be greater than 0' });
+      }
+      if (typeof specialRate !== 'number') {
+            return res.status(400).json({ error: 'specialRate must be a number' });
+      }
+      if (specialRate <= 0) {
+            return res.status(400).json({ error: 'specialRate must be greater than 0' });
       }
       next();
 };
@@ -82,4 +91,11 @@ module.exports.validateDateRangeQuery = (req, res, next) => {
       next();
 };
 
+module.exports.validateMarkCompletedBody = (req, res, next) => {
+      const { sellerId, from, to } = req.body;
+      if (!sellerId || !from || !to) {
+            return res.status(400).json({ error: 'sellerId, from, and to are required.' });
+      }
+      next();
+};
 

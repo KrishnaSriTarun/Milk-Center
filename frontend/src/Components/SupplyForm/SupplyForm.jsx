@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getlatestRate } from '../../Services/Rate';
 
-function SupplyForm() {
+function SupplyForm({ setSubmittedData }) {
       const [loading, setLoading] = useState(false)
       const [formData, setFormData] = useState({
             sellerId: '',
@@ -12,6 +12,7 @@ function SupplyForm() {
             fat: '',
       });
       const [rate, setRate] = useState(0);
+
 
       const [sellerIds, setSellerIds] = useState([]);
       useEffect(() => {
@@ -60,6 +61,8 @@ function SupplyForm() {
             try {
                   await addNewSupply(supplyData);
                   toast.success('Supply added successfully!');
+                  console.log("Submitting with rate:", rate);
+                  setSubmittedData({ ...supplyData, amount: totalAmount(),rate: rate });
                   setFormData({ sellerId: '', quantity: '', fat: '' });
             } catch (err) {
                   toast.error('Failed to add supply');
@@ -83,7 +86,7 @@ function SupplyForm() {
             >
                   <div className="mx-2 mt-2">
                         <div className="row ">
-                              <div className="card col-md-12 form-container"  style={{ borderRadius: '16px' }}>
+                              <div className="card col-md-12 form-container" style={{ borderRadius: '16px' }}>
                                     <div className="card-body">
                                           <form onSubmit={handleSubmit}>
                                                 <div className="mb-3">

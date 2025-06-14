@@ -1,0 +1,28 @@
+.receipt-container {
+      background-color: #fff;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      color: #333;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.receipt-container h5 {
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #2c3e50;
+}
+
+.receipt-container p {
+      margin: 8px 0;
+      font-size: 16px;
+}
+
+.no-data {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+      border: 2px dashed #ccc;
+      background-color: #f9f9f9;
+}
