@@ -11,6 +11,15 @@ exports.addSupply = async (req, res) => {
       res.status(201).json(supply);
 };
 
+exports.addSpecialSupply = async (req, res) => {
+      console.log(req.body);
+      const { sellerId, quantity, fat, status } = req.body;
+      const [latestRate] = await Rate.find().sort({ createdAt: -1 }).limit(1);
+      const amount = Math.floor(fat * latestRate.specialRate * quantity);
+      const supply = new Supply({ sellerId, quantity, fat, rate: latestRate.specialRate, amount, status });
+      await supply.save();
+      res.status(201).json(supply);
+};
 
 exports.getAllSupplies = async (req, res) => {
       const page = parseInt(req.query.page) || 1;

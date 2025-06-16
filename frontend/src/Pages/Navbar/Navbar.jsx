@@ -1,8 +1,18 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
 import './Navbar.css';
 import { assets } from '../../assets/Assets';
 const Navbar = () => {
+      const location = useLocation();
+
+      let addMilkLabel = "Add Milk";
+      if (location.pathname === "/addMilk/normal") {
+            addMilkLabel = "Normal";
+      } else if (location.pathname === "/addMilk/special") {
+            addMilkLabel = "Special";
+      }
+
       return (
             <div>
                   <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2">
@@ -17,9 +27,27 @@ const Navbar = () => {
                                     <li className="nav-item">
                                           <Link className="nav-link" to="/dashboard">DashBoard</Link>
                                     </li>
-                                    <li className="nav-item">
-                                          <Link className="nav-link" to="/addMilk">Add Milk</Link>
+                                    <li className="nav-item dropdown">
+                                          <a
+                                                className="nav-link dropdown-toggle"
+                                                href="#"
+                                                id="addMilkDropdown"
+                                                role="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false"
+                                          >
+                                                {addMilkLabel}
+                                          </a>
+                                          <ul className="dropdown-menu" aria-labelledby="addMilkDropdown">
+                                                <li>
+                                                      <Link className="dropdown-item" to="/addMilk/normal">Normal</Link>
+                                                </li>
+                                                <li>
+                                                      <Link className="dropdown-item" to="/addMilk/special">Special</Link>
+                                                </li>
+                                          </ul>
                                     </li>
+
                                     <li className="nav-item">
                                           <Link className="nav-link" to="/billing">Billing</Link>
                                     </li>

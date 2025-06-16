@@ -8,6 +8,10 @@ export const addNewSupply = async (data) => {
       console.log(data)
       return await axios.post("http://localhost:3000/api/v0.1/Supply/add", data);
 }
+export const addSepcialSupply = async (data) => {
+      console.log(data)
+      return await axios.post("http://localhost:3000/api/v0.1/Supply/addSpecial", data);
+}
 
 export const getSupplyByRange = async (data) => {
       return await axios.get("http://localhost:3000/api/v0.1/Supply/Range", { params: data });

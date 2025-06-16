@@ -6,6 +6,7 @@ import Sellers from './Pages/Sellers/Sellers';
 import { ToastContainer } from 'react-toastify';
 import Billing from "./Pages/Billing/Billing";
 import Rate from "./Pages/Rate/Rate";
+import SpecialSeller from "./Pages/SpecialSeller/SpecialSeller";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/addMilk' element={<Sellers />} />
+        <Route path='/addMilk/normal' element={<Sellers />} />
+        <Route path='/addMilk/special' element={<SpecialSeller />} />
         <Route path='/billing' element={<Billing />} />
         <Route path='/newRate' element={<Rate />} />
       </Routes>
