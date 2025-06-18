@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcryptjs");
+const Seller = require("./models/Seller");
+const jwt = require("jsonwebtoken");
+
 
 module.exports.validateAddSupply = (req, res, next) => {
       const { sellerId, quantity, fat } = req.body;
@@ -26,11 +30,11 @@ module.exports.validateSellerIdQuery = (req, res, next) => {
 };
 
 module.exports.validateAddRate = (req, res, next) => {
-      const { rate,specialRate } = req.body;
+      const { rate, specialRate } = req.body;
       if (rate === undefined) {
             return res.status(400).json({ error: 'rate is required' });
       }
-      if (specialRate  === undefined) {
+      if (specialRate === undefined) {
             return res.status(400).json({ error: 'specialRate  is required' });
       }
       if (typeof rate !== 'number') {
@@ -97,5 +101,40 @@ module.exports.validateMarkCompletedBody = (req, res, next) => {
             return res.status(400).json({ error: 'sellerId, from, and to are required.' });
       }
       next();
+};
+
+module.exports.registerSellerMiddleware = async (req, res, next) => {
+      const { sellerId, name, PhoneNumber, role, password } = req.body;
+      if (!sellerId || !name || !PhoneNumber || !role || !password) {
+            return res.status(400).json({ message: "All fields are required" });
+      }
+      const existingSeller = await Seller.findOne({ PhoneNumber });
+      if (existingSeller) {
+            return res.status(409).json({ message: "Seller with this phone number already exists" });
+      }
+      next();
+};
+
+module.exports.loginValidation = async (req, res, next) => {
+      const { PhoneNumber, password } = req.body;
+      if (!PhoneNumber || !password) {
+            return res.status(400).json({ message: "Phone number and password are required" });
+      }
+      next();
+};
+
+module.exports.authMiddleware = (req, res, next) => {
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({ message: "Access denied. No token provided." });
+      }
+      const token = authHeader.split(" ")[1];
+      try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = decoded;
+            next();
+      } catch (err) {
+            return res.status(401).json(err.message);
+      }
 };
 

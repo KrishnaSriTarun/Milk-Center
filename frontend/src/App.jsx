@@ -7,12 +7,14 @@ import { ToastContainer } from 'react-toastify';
 import Billing from "./Pages/Billing/Billing";
 import Rate from "./Pages/Rate/Rate";
 import SpecialSeller from "./Pages/SpecialSeller/SpecialSeller";
+import Login from "./Pages/Login/Login";
 
 function App() {
   return (
     <div>
       <Navbar />
       <Routes>
+        <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/addMilk/normal' element={<Sellers />} />
         <Route path='/addMilk/special' element={<SpecialSeller />} />
