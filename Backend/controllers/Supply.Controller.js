@@ -32,8 +32,8 @@ exports.getAllSupplies = async (req, res) => {
       res.status(200).json({ currentPage: page, totalPages, totalSupplies, supplies, distinctUserIds });
 };
 
-exports.getSupplyByUser = async (req, res) => {   //Rethink
-      const { sellerId } = req.query;
+exports.getSupplyByUser = async (req, res) => {  
+      const sellerId = req.user.id;
       const tenDaysAgo = new Date();
       tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
       const supplies = await Supply.find({

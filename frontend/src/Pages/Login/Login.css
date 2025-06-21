@@ -7,13 +7,13 @@
       background-size: cover;
       background-position: center;
 }
-.card{
+.cards{
       background-color: white;
       width: 100%;
       max-width: 480px;
       border: none;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.card-body{
+.cards-body{
       padding: 2rem;
 }

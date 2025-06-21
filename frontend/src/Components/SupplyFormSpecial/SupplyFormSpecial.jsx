@@ -3,6 +3,7 @@ import { addNewSupply, addSepcialSupply, getAllSupply } from '../../Services/Sup
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getlatestRate } from '../../Services/Rate';
+import { sellerData } from '../../Services/Seller';
 
 function SupplyFormSpecial({ setSubmittedData }) {
       const [loading, setLoading] = useState(false)
@@ -18,8 +19,8 @@ function SupplyFormSpecial({ setSubmittedData }) {
       useEffect(() => {
             const fetchSellerIds = async () => {
                   try {
-                        const res = await getAllSupply();
-                        setSellerIds(res.data.distinctUserIds || []);
+                        const res = await sellerData();
+                        setSellerIds(res.data.sellerIds || []);
                   } catch (err) {
                         toast.error('Failed to fetch user IDs');
                         console.error(err);

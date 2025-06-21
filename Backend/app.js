@@ -1,20 +1,21 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
 const cors = require('cors');
-
+const serverless = require('serverless-http');
 
 app.use(cors());
-require('dotenv').config();
 
 const supplyRoutes = require('./routes/Supply.Route');
 const rateRoutes = require('./routes/Rate.Route');
 const sellerRoute = require('./routes/Seller.Route')
 
 app.use(express.json());
+console.log('Mongo URL:', process.env.MONGO_URL);
 
-mongoose.connect('mongodb://localhost:27017/supplyDB')
+mongoose.connect(process.env.MONGO_URL)
       .then(() => console.log('Connected to MongoDB'))
       .catch(err => console.error(err));
 
@@ -29,6 +30,11 @@ app.use((err, req, res, next) => {
       res.status(status).json({ status, message, error: err.message });
 });
 
-app.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-});
+if (require.main === module) {
+      const PORT = process.env.PORT || 3000;
+      app.listen(PORT, () => {
+            console.log(`Server running locally on http://localhost:${PORT}`);
+      });
+}
+
+module.exports = serverless(app);

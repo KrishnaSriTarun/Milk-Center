@@ -39,7 +39,7 @@ function Rate() {
 
 
       return (
-            <div className="rate-container">
+            <div className="rate-container mt-5">
                   <h4 className="text-center">Milk Rate Settings</h4>
                   <form className="rate-form" onSubmit={handleSubmit}>
                         <div className="mb-3">
@@ -64,7 +64,7 @@ function Rate() {
                                     className="form-control"
                               />
                         </div>
-                        <button type="submit" className="btn btn-primary w-100">
+                        <button type="submit" className="btn btn-warning w-100">
                               Update Rate
                         </button>
                   </form>

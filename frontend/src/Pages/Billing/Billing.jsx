@@ -69,7 +69,7 @@ function Billing() {
                               onChange={(e) => setTo(e.target.value)}
                               className="form-control mb-2"
                         />
-                        <button onClick={handleFetch} className="btn btn-primary w-100">Get Supplies</button>
+                        <button onClick={handleFetch} className="btn btn-warning w-100">Get Supplies</button>
                   </div>
 
                   {supplies.length > 0 && (

@@ -21,9 +21,12 @@ function Login() {
             setLoading(true);
             try {
                   const response = await sellerLogin(data);
+                  console.log(response);
+                  
                   if (response.status === 200) {
                         toast.success("Login successful");
                         localStorage.setItem("sellerToken", response.data.token);
+                        localStorage.setItem("sellerRole", response.data.role);
                         navigate("/dashboard");
                   }
             } catch (err) {
@@ -35,9 +38,9 @@ function Login() {
       };
 
       return (
-            <div className="bg-light d-flex align-items-center justify-content-center vh-100 login-background">
-                  <div className="card shadow-lg w-100" style={{ maxWidth: '480px' }}>
-                        <div className="card-body">
+            <div className="bg-light d-flex align-items-center justify-content-center vh-100 login-background ">
+                  <div className="cards shadow-lg w-100" style={{ maxWidth: '480px' ,borderRadius:"25px"}}>
+                        <div className="cards-body">
                               <div className="text-center">
                                     <h1 className="card-title">Seller Login</h1>
                                     <p className="card-text text-muted">
