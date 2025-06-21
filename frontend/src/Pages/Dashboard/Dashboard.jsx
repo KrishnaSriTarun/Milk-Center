@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Package, RefreshCw } from 'lucide-react';
 import { getAllSupply } from './../../Services/Supply';
 import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Dashboard() {
@@ -15,6 +16,20 @@ function Dashboard() {
       const [loading, setLoading] = useState(true);
       const [error, setError] = useState(null);
       const [sellerFilter, setSellerFilter] = useState('');
+      const [name, setName] = useState('');
+
+      // Decode seller name from token
+      useEffect(() => {
+            const token = localStorage.getItem('sellerToken');
+            if (token) {
+                  try {
+                        const decoded = jwtDecode(token);
+                        setName(decoded.name || '');
+                  } catch (error) {
+                        console.error('Error decoding token:', error);
+                  }
+            }
+      }, []);
 
       const fetchSupplies = async (page = 1, showToast = false) => {
             setLoading(true);
@@ -162,7 +177,7 @@ function Dashboard() {
                                                       filteredSupplies.map((supply) => (
                                                             <tr key={supply._id}>
                                                                   <td>{supply.sellerId}</td>
-                                                                  <td className="text-muted">Name</td>
+                                                                  <td className="text-muted">{name || 'Name'}</td>
                                                                   <td>{supply.quantity} L</td>
                                                                   <td>
                                                                         <span className={getFatBadgeClass(supply.fat)}>{supply.fat}%</span>
@@ -175,6 +190,7 @@ function Dashboard() {
                                                                                           ? 'bg-success'
                                                                                           : 'bg-warning text-dark'
                                                                                     } px-2 py-1 rounded`}
+
                                                                         >
                                                                               {supply.status}
                                                                         </span>

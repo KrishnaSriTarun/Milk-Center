@@ -1,9 +1,10 @@
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const getlatestRate = async () => {
-      return axios.get('http://localhost:3000/api/v0.1/getRate',{headers:{Authorization:`Bearer ${localStorage.getItem("sellerToken")}`}});
-}
+      return axios.get(`${BASE_URL}/api/v0.1/getRate`, {headers: {Authorization: `Bearer ${localStorage.getItem("sellerToken")}`,},});
+};
 
 export const updateRate = async (id, data) => {
-      return await axios.put(`http://localhost:3000/api/v0.1/updateRate/${id}`, data,{headers:{Authorization:`Bearer ${localStorage.getItem("sellerToken")}`}});
+      return axios.put(`${BASE_URL}/api/v0.1/updateRate/${id}`, data, {headers: {Authorization: `Bearer ${localStorage.getItem("sellerToken")}`,},});
 };
