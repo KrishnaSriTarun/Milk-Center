@@ -24,6 +24,11 @@ app.use('/api/v0.1/Supply', supplyRoutes);
 app.use('/api/v0.1', rateRoutes);
 app.use('/api/v0.1', sellerRoute);
 
+app.get('/', (req, res) => {
+  res.send('✅ Milk Center API is running!');
+});
+
+
 app.use((err, req, res, next) => {
       console.error(err.stack);
       const { status = 500, message = "Something went wrong!" } = err;
