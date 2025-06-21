@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
 };
 
 exports.usersData = async (req, res) => {
-      const sellerData = await Seller.find({}, 'name PhoneNumber role');
+      const sellerData = await Seller.find({}, 'name PhoneNumber role sellerId');
       const sellerIds = await Seller.distinct('sellerId');
       res.status(200).json({ sellerData, sellerIds });
 }
