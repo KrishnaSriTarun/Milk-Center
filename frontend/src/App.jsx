@@ -1,5 +1,4 @@
-
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from './Pages/Navbar/Navbar';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import Sellers from './Pages/Sellers/Sellers';
@@ -9,20 +8,23 @@ import Rate from "./Pages/Rate/Rate";
 import SpecialSeller from "./Pages/SpecialSeller/SpecialSeller";
 import Login from "./Pages/Login/Login";
 import Users from "./Pages/Users/Users";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
+  const location = useLocation();
+  const hideNavbar = location.pathname === "/login";
   return (
     <div>
-      <Navbar />
+      {!hideNavbar && <Navbar />}
       <Routes>
-        <Route path='/' element={<Dashboard />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/addMilk/normal' element={<Sellers />} />
-        <Route path='/addMilk/special' element={<SpecialSeller />} />
-        <Route path='/billing' element={<Billing />} />
-        <Route path='/newRate' element={<Rate />} />
-        <Route path='/users' element={<Users />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<PrivateRoute> <Dashboard /> </PrivateRoute>} />
+        <Route path="/dashboard" element={<PrivateRoute> <Dashboard /> </PrivateRoute>} />
+        <Route path="/addMilk/normal" element={<PrivateRoute> <Sellers /> </PrivateRoute>} />
+        <Route path="/addMilk/special" element={ <PrivateRoute> <SpecialSeller /></PrivateRoute>}/>
+        <Route path="/billing" element={<PrivateRoute><Billing /></PrivateRoute>}/>
+        <Route path="/newRate"element={<PrivateRoute><Rate /></PrivateRoute>}/>
+        <Route path="/users"element={<PrivateRoute><Users /></PrivateRoute>}/>
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
     </div>

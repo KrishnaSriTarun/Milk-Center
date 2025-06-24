@@ -16,7 +16,7 @@ exports.login = async (req, res) => {
       if (!seller) return res.status(400).json({ message: "Seller not found" });
       const isMatch = await bcrypt.compare(password, seller.password);
       if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-      const token = jwt.sign({ id: seller.sellerId, role: seller.role,name: seller.name },process.env.JWT_SECRET,{ expiresIn: "2d" });
+      const token = jwt.sign({ id: seller.sellerId, role: seller.role,name: seller.name },process.env.JWT_SECRET,{ expiresIn: "10d" });
       res.status(200).json({token,role: seller.role});
 };
 

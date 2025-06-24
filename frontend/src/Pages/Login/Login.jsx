@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Login.css";
-import toast from "react-hot-toast"; 
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { sellerLogin } from "../../Services/Seller";
 
@@ -22,7 +22,7 @@ function Login() {
             try {
                   const response = await sellerLogin(data);
                   console.log(response);
-                  
+
                   if (response.status === 200) {
                         toast.success("Login successful");
                         localStorage.setItem("sellerToken", response.data.token);
@@ -36,10 +36,16 @@ function Login() {
                   setLoading(false);
             }
       };
+      useEffect(() => {
+            const token = localStorage.getItem("sellerToken");
+            if (token) {
+                  navigate("/dashboard", { replace: true });
+            }
+      }, []);
 
       return (
             <div className="bg-light d-flex align-items-center justify-content-center vh-100 login-background ">
-                  <div className="cards shadow-lg w-100" style={{ maxWidth: '480px' ,borderRadius:"25px"}}>
+                  <div className="cards shadow-lg w-100" style={{ maxWidth: '480px', borderRadius: "25px" }}>
                         <div className="cards-body">
                               <div className="text-center">
                                     <h1 className="card-title">Seller Login</h1>
