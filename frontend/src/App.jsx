@@ -9,10 +9,12 @@ import SpecialSeller from "./Pages/SpecialSeller/SpecialSeller";
 import Login from "./Pages/Login/Login";
 import Users from "./Pages/Users/Users";
 import PrivateRoute from "./PrivateRoute";
+import SellerUser from "./Pages/SellerUser/SellerUser";
 
 function App() {
   const location = useLocation();
   const hideNavbar = location.pathname === "/login";
+  const role=localStorage.getItem("sellerRole");
   return (
     <div>
       {!hideNavbar && <Navbar />}
@@ -24,7 +26,8 @@ function App() {
         <Route path="/addMilk/special" element={ <PrivateRoute> <SpecialSeller /></PrivateRoute>}/>
         <Route path="/billing" element={<PrivateRoute><Billing /></PrivateRoute>}/>
         <Route path="/newRate"element={<PrivateRoute><Rate /></PrivateRoute>}/>
-        <Route path="/users"element={<PrivateRoute><Users /></PrivateRoute>}/>
+        <Route path="/addUsers"element={<PrivateRoute><Users /></PrivateRoute>}/>
+        <Route path="/users"element={<PrivateRoute><SellerUser /></PrivateRoute>}/>
       </Routes>
       <ToastContainer position="top-right" autoClose={3000} />
     </div>

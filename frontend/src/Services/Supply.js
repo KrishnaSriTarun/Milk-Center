@@ -18,6 +18,9 @@ export const addSepcialSupply = async (data) => {
 export const getSupplyByRange = async (data) => {
       return axios.get(`${BASE_URL}/api/v0.1/Supply/Range`, {params: data,...getAuthHeader(),});
 };
+export const getSupplyByUser = async (data) => {
+      return axios.get(`${BASE_URL}/api/v0.1/Supply/byUser`, {params: data,...getAuthHeader(),});
+};
 
 export const deleteSupply = async (id) => {
       return axios.delete(`${BASE_URL}/api/v0.1/Supply/${id}`, getAuthHeader());

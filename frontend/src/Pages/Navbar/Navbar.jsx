@@ -1,10 +1,11 @@
-
-import { Link, useLocation } from 'react-router-dom';
-
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import { assets } from '../../assets/Assets';
+
 const Navbar = () => {
       const location = useLocation();
+      const navigate = useNavigate();
+      const userRole = localStorage.getItem('sellerRole');
 
       let addMilkLabel = "Add Milk";
       if (location.pathname === "/addMilk/normal") {
@@ -13,6 +14,11 @@ const Navbar = () => {
             addMilkLabel = "Special";
       }
 
+      const handleLogout = () => {
+            localStorage.removeItem('sellerToken');
+            localStorage.removeItem('sellerRole');
+            navigate('/login');
+      };
       return (
             <div>
                   <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-2">
@@ -27,35 +33,52 @@ const Navbar = () => {
                                     <li className="nav-item">
                                           <Link className="nav-link" to="/dashboard">DashBoard</Link>
                                     </li>
-                                    <li className="nav-item dropdown">
-                                          <a
-                                                className="nav-link dropdown-toggle"
-                                                href="#"
-                                                id="addMilkDropdown"
-                                                role="button"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                          >
-                                                {addMilkLabel}
-                                          </a>
-                                          <ul className="dropdown-menu" aria-labelledby="addMilkDropdown">
-                                                <li>
-                                                      <Link className="dropdown-item" to="/addMilk/normal">Normal</Link>
+                                    {userRole === 'ROLE_ADMIN' ? (
+                                          <>
+                                                <li className="nav-item dropdown">
+                                                      <a
+                                                            className="nav-link dropdown-toggle"
+                                                            href="#"
+                                                            id="addMilkDropdown"
+                                                            role="button"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false"
+                                                      >
+                                                            {addMilkLabel}
+                                                      </a>
+                                                      <ul className="dropdown-menu" aria-labelledby="addMilkDropdown">
+                                                            <li>
+                                                                  <Link className="dropdown-item" to="/addMilk/normal">Normal</Link>
+                                                            </li>
+                                                            <li>
+                                                                  <Link className="dropdown-item" to="/addMilk/special">Special</Link>
+                                                            </li>
+                                                      </ul>
                                                 </li>
-                                                <li>
-                                                      <Link className="dropdown-item" to="/addMilk/special">Special</Link>
-                                                </li>
-                                          </ul>
-                                    </li>
 
+                                                <li className="nav-item">
+                                                      <Link className="nav-link" to="/billing">Billing</Link>
+                                                </li>
+
+                                                <li className="nav-item">
+                                                      <Link className="nav-link" to="/newRate">Rate</Link>
+                                                </li>
+
+                                                <li className="nav-item">
+                                                      <Link className="nav-link" to="/addUsers">Manage Users</Link>
+                                                </li>
+                                          </>
+                                    ) : (
+                                          /* Seller-only link */
+                                          <li className="nav-item">
+                                                <Link className="nav-link" to="/users">Data</Link>
+                                          </li>
+                                    )}
+                              </ul>
+
+                              <ul className="navbar-nav">
                                     <li className="nav-item">
-                                          <Link className="nav-link" to="/billing">Billing</Link>
-                                    </li>
-                                    <li className="nav-item">
-                                          <Link className="nav-link" to="/newRate">Rate</Link>
-                                    </li>
-                                    <li className="nav-item">
-                                          <Link className="nav-link" to="/users">Manage Users</Link>
+                                          <button className="nav-link btn btn-link" onClick={handleLogout}>Logout</button>
                                     </li>
                               </ul>
                         </div>
